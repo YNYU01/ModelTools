@@ -19,7 +19,7 @@
 
 <body>
 <!--侧边栏-->
-<div id="side" class="df df-ffc side ovh" style="--gap:20px; z-index: 20; position: fixed; ">
+<div id="side" class="df df-ffc side ovh" style="--gap:20px; z-index: 20; ">
     <div class="df" style="justify-content: space-between;">
         <div class="w100" > ·配置项</div>
         <!--展开收起浮层-->
@@ -310,12 +310,12 @@
         <div class="wh100"></div>
         <div style="min-height: 60px;"></div>
         <!--导出项-->
-        <div class="df cc" style="width: calc(100% - 20px); position: absolute; bottom: 50px; z-index: 20;">
-            <div id="side-mask" style="position: absolute; width: 290px; height: 50px; top: -10px; background:var(--boxGry);">
-                <div style=" position: absolute; font-size: 10px; bottom: -30px; opacity: 0.4;">
+        <div class="df cc" style="width: calc(100% - 20px); position: absolute; bottom: 20px; z-index: 20;">
+            <div id="side-mask" style="position: absolute; width: calc(100% + 40px); height: 50px; top: -10px; background:var(--boxGry);">
+                <!--div style=" position: absolute; font-size: 10px; bottom: -30px; opacity: 0.4;">
                     <li style="margin-bottom: -4px;">保存数据：导出表单为json文件;</li>
                     <li>导出图片：按规范库转图片，合并为一个zip压缩包导出;</li>
-                </div> 
+                </div--> 
             </div>
             <button class="btn3" style="z-index: 2;" onclick="saveAll()"> 保存数据 </button>
             <button class="btn2" style="z-index: 2;"  onclick="exportAll()"> 导出图片 </button>
@@ -326,7 +326,7 @@
 <!--侧边栏（展开时）占位-->
 <div class="side" id="side-area" style="background: none; border: none; margin: 10px;"></div>
 <!--画布-->
-<div id="view" class="df df-ffc cc ovh" style="width: calc(100% - 300px); position: relative;">
+<div id="view" class="df df-ffc cc ovh" style=" position: relative;">
     <div style="filter:drop-shadow(0 0 1px var(--mainColor)) drop-shadow(0 0 2px black)">
         <div id="view-box" class="df loadding" style="width: fit-content; transform: scale(0.4); transition: transform 0.5s ;  "
         onmousewheel="
@@ -575,7 +575,7 @@
     </div>
 </div>
 <!--放大器-->
-<div id="view-size" class="df df-ffc cc" style=" --gap:10px; position: absolute; bottom:20px; right: 10px;">
+<div id="view-size" class="df df-ffc cc" style=" --gap:10px; position: absolute;">
     <button class="btn-mini" onclick="
     viewSlider.value = viewSlider.value*1 + 10;
     zoomNum.innerHTML = viewSlider.value;
