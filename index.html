@@ -1,0 +1,850 @@
+<!--
+ - ©版权所有：2024-2025 YNYU @lvynyu2.gmail.com
+ - 禁止未授权的商用及二次编辑
+ - 禁止用于违法行为，如有，与作者无关
+ - 二次编辑需将引用部分开源
+ - 引用开源库的部分应遵循对应许可
+-->
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Model Tools</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Chocolate+Classical+Sans&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style/styles.css">
+</head>
+
+<body>
+<!--侧边栏-->
+<div id="side" class="df df-ffc side ovh" style="--gap:20px; z-index: 20; position: fixed; ">
+    <div class="df" style="justify-content: space-between;">
+        <div class="w100" > ·配置项</div>
+        <!--展开收起浮层-->
+        <div style="width: 12px; height: 12px;position: relative; margin-top: -1px;">
+            <input id="big" type="checkbox" checked="true" style="display: none;" 
+            onchange="
+            if(this.checked){
+                modelTable.style.display = 'flex';
+                sideArea.style.display = 'flex';
+                side.style.overflow = 'hidden';
+                side.className = 'df df-ffc side ovh';
+                viewInfo.style.top = '10px';
+            }else{
+                modelTable.style.display = 'none';
+                side.style.overflow = 'visible';
+                sideArea.style.display = 'none';
+                side.className = 'df df-ffc side-float ovh';
+                view.style.width = '100%';
+                viewInfo.style.top = '60px';
+            };autoZoom();"></input>
+            <label for="big" class="btn-big" style="position: relative;">
+                <div class="tags-search-toast-area" style="right: 0; bottom:0;width: 20px;">
+                <div class="tags-search-toast" style="width: 120px;height: 18px; top: 30px; right: 0;"> 展开/收起浮层</div>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="none" version="1.1"
+                width="100%" height="100%" viewBox="0 0 10 10">
+                <path class="path1" d="M5.5,2L8,2L8,4.5L10,4.5L10,0L5.5,0L5.5,2Z" fill="var(--boxBod)" fill-opacity="1" />
+                <path class="path2" d="M4.5,8L2,8L2,5.5L0,5.5L0,10L4.5,10L4.5,8Z" fill="var(--boxBod)" fill-opacity="1" />
+                </svg>
+            </label>
+        </div>
+    </div>
+    <!--配置项-->
+    <div class="df df-ffc noscrollbar" id="model-table" style="height: calc(100vh - 80px); overflow-y: scroll; border-top: var(--boxBod) 1px solid;">
+        <div class="df df-ffc" style="--gap:4px;">
+            <p>[-主标题-]</p>
+            <div class="df" style="--gap:4px; position: relative;">
+                <a> 文案 </a><span> :</span>
+                <div class="df df-ffc w100">
+                    <input type="text" id="title-main-1" class="search-box" maxlength="5" 
+                    value="僵尸之夜"
+                    oninput="txt1.innerHTML = this.value; txt1s.innerHTML = this.value;"/>
+                    <input type="text" id="title-main-2" class="search-box" maxlength="5" 
+                    value="见鬼啦!"
+                    oninput="txt2.innerHTML = this.value; txt2s.innerHTML = this.value;"/>
+                </div> 
+                <div style="position: absolute; font-size: 8px; right: 4px; z-index: 2;">
+                    <span id="title-main-1-num"> 0 </span>/
+                    <span>5</span>
+                </div>
+                <div style="position: absolute; font-size: 8px; right: 4px; bottom: 0; z-index: 2;">
+                    <span id="title-main-2-num"> 0 </span>/
+                    <span>5</span>
+                </div>
+            </div>
+            <div class="df cc" style="--gap:4px;">
+                <a> 字体 </a><span> :</span>
+                <select id="t-f" class="select"
+                onchange="
+                txt1.style.fontFamily = this.value; txt1s.style.fontFamily = this.value;
+                txt2.style.fontFamily = this.value; txt2s.style.fontFamily = this.value;">
+                    <option value="FZYaSongS-B-GB">方正粗雅宋</option>
+                    <option value="FZJinLS-B-GB">方正粗金陵</option>
+                    <option value="FZShengShiKaiShuS-EB-GB">方正盛世楷书</option>
+                    <option value="HYXiaoLiShuJ">汉仪小隶书</option>
+                </select>
+            </div>
+            <div class="df cc" style="--gap:4px;">
+                <a> 染色 </a><span> :</span>
+                <input id="title-main-colorBox" type="color" class="search-box" value="#ffda82" 
+                oninput="root.style.setProperty('--title-mainColor', this.value);
+                document.getElementById('title-main-color').value = this.value;
+                "/>
+                <input id="title-main-color" class="search-box" type="text" value="#ffda82" 
+                onKeyPress="if(window.event.keyCode==13){this.blur();reColorText(this);
+                    root.style.setProperty('--title-mainColor', this.value);
+                document.getElementById('title-main-colorBox').value = this.value;}"/>
+            </div>
+        </div>
+        
+        <div class="df df-ffc" style="--gap:4px;">
+            <p>[-副标题-]</p>
+            <div class="df cc" style="--gap:4px; position: relative;">
+                <a> 文案 </a><span> :</span>
+                <input type="text" id="title-sec" class="search-box" maxlength="16" value="十连神杯、数百宝箱送捏脸扮鬼达人"
+                oninput="txt3.innerHTML = this.value"/>
+                <div style="position: absolute; font-size: 8px; right: 4px; z-index: 2;">
+                    <span id="title-sec-num"> 0 </span>/
+                    <span>16</span>
+                </div>
+            </div>
+        
+            <div class="df cc" style="--gap:4px;">
+                <a> 字体 </a><span> :</span>
+                <select id="t-f" class="select" oninput="mpFont()"
+                onchange="txt3.style.fontFamily = this.value;">
+                    <option value="FZJinLS-B-GB">方正粗金陵</option>
+                    <option value="FZYaSongS-B-GB">方正粗雅宋</option>
+                    <option value="FZShengShiKaiShuS-EB-GB">方正盛世楷书</option>
+                    <option value="HYXiaoLiShuJ">汉仪小隶书</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="df df-ffc" style="--gap:4px;">
+            <p>[-奖励-]</p>
+            <div class="df" style="--gap:4px;">
+                <input type="checkbox" checked="true" id="gift-chk-1" style="display: none;" 
+                onchange="if(this.checked){
+                    this.parentNode.style.opacity = 1;
+                }else{
+                    this.parentNode.style.opacity = 0.2;
+                };giftPick(this);"/>
+                <label class="chk-gift" for="gift-chk-1" style="margin-top: 3px;">
+                    <svg width="100%" height="100%" viewBox="0 0 18 18" style="opacity: 0.6;">
+                        <circle cx="9" cy="9" r="8" stroke="var(--mainColor)" stroke-width="1" fill="rgba(0,0,0,0)" />
+                        <circle cx="9" cy="9" r="5"  fill="var(--has)" />
+                    </svg>
+                </label>
+                <div class="df df-ffc" style="--gap:2px;">
+                    <div class="df cc" style="--gap:4px;">
+                        <div style="width: 60px;">图标-1</div>
+                        <input id="gift-img-1" type="file" class="search-box" style="background: none; border: none;"
+                        oninput="giftImg(this)"></input> 
+                    </div>
+                    <div class="df cc" style="--gap:4px; position: relative;">
+                        <a style="min-width: 5ch ;"> 文案 </a><span> :</span>
+                        <input type="text" id="icon-name-1" class="search-box" maxlength="8" value="永昼神杯"
+                        oninput="giftNameSet(this)"/>
+                        <div style="position: absolute; font-size: 8px; right: 70px; z-index: 2;">
+                            <span id="icon-name-1-num"> 0 </span>/
+                            <span>8</span>
+                        </div>
+                        <div class="input-btn-skill" style="width: 60px; min-width: 60px;">
+                            <input id="input-num-1" type="text" class="input-btn-skill" style="border:0px; height: 18px;" value="10"
+                              oninput="giftNumSet(this)" onKeyPress="if(window.event.keyCode==13) this.blur()" />
+                            <div class="input-btn-skill" style="border:0px; width:30px; border-radius: 0px ;background-color: var(--boxGry); opacity: 0.8;  color:var(--mainColor)">
+                              连</div>
+                        </div>
+                    </div> 
+                </div>
+                
+            </div>
+            <div style="height: 1px;"></div>
+            <div class="df" style="--gap:4px;">
+                <input type="checkbox" checked="true" id="gift-chk-2" style="display: none;" 
+                onchange="if(this.checked){
+                    this.parentNode.style.opacity = 1;
+                }else{
+                    this.parentNode.style.opacity = 0.2;
+                };giftPick(this);"/>
+                <label class="chk-gift" for="gift-chk-2" style="margin-top: 3px;">
+                    <svg width="100%" height="100%" viewBox="0 0 18 18" style="opacity: 0.6;">
+                        <circle cx="9" cy="9" r="8" stroke="var(--mainColor)" stroke-width="1" fill="rgba(0,0,0,0)" />
+                        <circle cx="9" cy="9" r="5"  fill="var(--has)" />
+                    </svg>
+                </label>
+                <div class="df df-ffc" style="--gap:2px;">
+                    <div class="df cc" style="--gap:4px;">
+                        <div style="width: 60px;">图标-2</div>
+                        <input id="gift-img-2" type="file" class="search-box" style="background: none; border: none;"
+                        oninput="giftImg(this)"></input> 
+                    </div>
+                    <div class="df cc" style="--gap:4px; position: relative;">
+                        <a style="min-width: 5ch ;"> 文案 </a><span> :</span>
+                        <input type="text" id="icon-name-2" class="search-box" maxlength="8" value="永昼神杯"
+                        oninput="giftNameSet(this)"/>
+                        <div style="position: absolute; font-size: 8px; right: 70px; z-index: 2;">
+                            <span id="icon-name-2-num"> 0 </span>/
+                            <span>8</span>
+                        </div>
+                        <div class="input-btn-skill" style="width: 60px; min-width: 60px;">
+                            <input id="input-num-2" type="text" class="input-btn-skill" style="border:0px; height: 18px;" value="5"
+                              oninput="giftNumSet(this)" onKeyPress="if(window.event.keyCode==13) this.blur()" />
+                            <div class="input-btn-skill" style="border:0px; width:30px; border-radius: 0px ;background-color: var(--boxGry); opacity: 0.8;  color:var(--mainColor)">
+                              连</div>
+                        </div>
+                    </div>    
+                </div>
+                
+            </div>
+            <div style="height: 1px;"></div>
+            <div class="df" style="--gap:4px;">
+                <input type="checkbox" checked="true" id="gift-chk-3" style="display: none;" 
+                onchange="if(this.checked){
+                    this.parentNode.style.opacity = 1;
+                }else{
+                    this.parentNode.style.opacity = 0.2;
+                };giftPick(this);"/>
+                <label class="chk-gift" for="gift-chk-3" style="margin-top: 3px;">
+                    <svg width="100%" height="100%" viewBox="0 0 18 18" style="opacity: 0.6;">
+                        <circle cx="9" cy="9" r="8" stroke="var(--mainColor)" stroke-width="1" fill="rgba(0,0,0,0)" />
+                        <circle cx="9" cy="9" r="5"  fill="var(--has)" />
+                    </svg>
+                </label>
+                <div class="df df-ffc" style="--gap:2px;">
+                    <div class="df cc" style="--gap:4px;">
+                        <div style="width: 60px;">图标-3</div>
+                        <input id="gift-img-3" type="file" class="search-box" style="background: none; border: none;"
+                        oninput="giftImg(this)"></input> 
+                    </div>
+                    <div class="df cc" style="--gap:4px; position: relative;">
+                        <a style="min-width: 5ch ;"> 文案 </a><span> :</span>
+                        <input type="text" id="icon-name-3" class="search-box" maxlength="8" value="盖世宝箱任选礼"
+                        oninput="giftNameSet(this)"/>
+                        <div style="position: absolute; font-size: 8px; right: 70px; z-index: 2;">
+                            <span id="icon-name-3-num"> 0 </span>/
+                            <span>8</span>
+                        </div>
+                        <div class="input-btn-skill" style="width: 60px; min-width: 60px;">
+                            <input id="input-num-3" type="text" class="input-btn-skill" style="border:0px; height: 18px;" value="2"
+                              oninput="giftNumSet(this)" onKeyPress="if(window.event.keyCode==13) this.blur()" />
+                            <div class="input-btn-skill" style="border:0px; width:30px; border-radius: 0px ;background-color: var(--boxGry); opacity: 0.8;  color:var(--mainColor)">
+                              连</div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div style="height: 1px;"></div>
+            <div class="df" style="--gap:4px;">
+                <input type="checkbox" checked="true" id="gift-chk-4" style="display: none;" 
+                onchange="if(this.checked){
+                    this.parentNode.style.opacity = 1;
+                }else{
+                    this.parentNode.style.opacity = 0.2;
+                };giftPick(this);"/>
+                <label class="chk-gift" for="gift-chk-4" style="margin-top: 3px;">
+                    <svg width="100%" height="100%" viewBox="0 0 18 18" style="opacity: 0.6;">
+                        <circle cx="9" cy="9" r="8" stroke="var(--mainColor)" stroke-width="1" fill="rgba(0,0,0,0)" />
+                        <circle cx="9" cy="9" r="5"  fill="var(--has)" />
+                    </svg>
+                </label>
+                <div class="df df-ffc" style="--gap:2px;">
+                    <div class="df cc" style="--gap:4px;">
+                        <div style="width: 60px;">图标-4</div>
+                        <input id="gift-img-4" type="file" class="search-box" style="background: none; border: none;"
+                        oninput="giftImg(this)"></input> 
+                    </div>
+                    <div class="df cc" style="--gap:4px; position: relative;">
+                        <a style="min-width: 5ch ;"> 文案 </a><span> :</span>
+                        <input type="text" id="icon-name-4" class="search-box" maxlength="8" value="盖世宝箱任选礼"
+                        oninput="giftNameSet(this)"/>
+                        <div style="position: absolute; font-size: 8px; right: 70px; z-index: 2;">
+                            <span id="icon-name-4-num"> 0 </span>/
+                            <span>8</span>
+                        </div>
+                        <div class="input-btn-skill" style="width: 60px; min-width: 60px;">
+                            <input id="input-num-4" type="text" class="input-btn-skill" style="border:0px; height: 18px;" value="1"
+                              oninput="giftNumSet(this)" onKeyPress="if(window.event.keyCode==13) this.blur()" />
+                            <div class="input-btn-skill" style="border:0px; width:30px; border-radius: 0px ;background-color: var(--boxGry); opacity: 0.8;  color:var(--mainColor)">
+                              连</div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+
+
+        </div>
+        
+        <div class="df df-ffc" style="--gap:4px;">
+            <p>[-背景图-]</p>
+            <div class="df">
+                <div class="df cc" style="--gap:4px;" >  
+                    <input id="bg-img-1" type="file" class="search-box" style="background: none; border: none;"></input> 
+                </div>
+                <div class="df cc" style="--gap:4px;opacity: 0.4;">
+                    <input type="checkbox" id="safa-chk" style="display: none;" 
+                    onchange="
+                    if(this.checked){
+                        this.parentNode.style.opacity = 1;
+                        safaArea.style.display = 'block';
+                    }else{
+                        this.parentNode.style.opacity = 0.4;
+                        safaArea.style.display = 'none';
+                    }"/>
+                    <label class="chk-gift" for="safa-chk">
+                        <svg width="100%" height="100%" viewBox="0 0 18 18" style="opacity: 0.6;">
+                            <circle cx="9" cy="9" r="8" stroke="var(--mainColor)" stroke-width="1" fill="rgba(0,0,0,0)" />
+                            <circle cx="9" cy="9" r="5"  fill="var(--has)" />
+                        </svg>
+                    </label>
+                    <div style="width: 100%; min-width: 80px;">安全区示意</div>
+                </div>
+            </div>
+        </div>
+        <div class="wh100"></div>
+        <div style="min-height: 60px;"></div>
+        <!--导出项-->
+        <div class="df cc" style="width: calc(100% - 20px); position: absolute; bottom: 50px; z-index: 20;">
+            <div id="side-mask" style="position: absolute; width: 290px; height: 50px; top: -10px; background:var(--boxGry);">
+                <div style=" position: absolute; font-size: 10px; bottom: -30px; opacity: 0.4;">
+                    <li style="margin-bottom: -4px;">保存数据：导出表单为json文件;</li>
+                    <li>导出图片：按规范库转图片，合并为一个zip压缩包导出;</li>
+                </div> 
+            </div>
+            <button class="btn3" style="z-index: 2;" onclick="saveAll()"> 保存数据 </button>
+            <button class="btn2" style="z-index: 2;"  onclick="exportAll()"> 导出图片 </button>
+        </div>
+    </div> 
+       
+</div>
+<!--侧边栏（展开时）占位-->
+<div class="side" id="side-area" style="background: none; border: none; margin: 10px;"></div>
+<!--画布-->
+<div id="view" class="df df-ffc cc ovh" style="width: calc(100% - 300px); position: relative;">
+    <div style="filter:drop-shadow(0 0 1px var(--mainColor)) drop-shadow(0 0 2px black)">
+        <div id="view-box" class="df loadding" style="width: fit-content; transform: scale(0.4); transition: transform 0.5s ;  "
+        onmousewheel="
+            var step = Math.abs(event.wheelDelta)/12 ;
+            if(event.wheelDelta > 0){
+                viewSlider.value = viewSlider.value*1 + step;
+            } else {
+                viewSlider.value = viewSlider.value*1 - step;
+            }
+            zoomNum.innerHTML = viewSlider.value;
+            zoom = viewSlider.value;
+            viewBox.style.transform = 'scale( '+ viewSlider.value/100 + ')';
+            this.style.transformOrigin = (clickX - this.left)/this.offsetWidth * 100 + '%' + (clickY - this.top)/this.offsetHeight * 100 + '%';"
+            
+        onmousedown="if(window.event.button == 0){
+            isDragging = true;
+            clickX = window.event.clientX;
+            clickY = window.event.clientY;  
+            this.style.cursor = 'move';
+        }"
+        onmousemove="
+        if(isDragging){
+            moveX = moveXX + window.event.clientX - clickX;
+            moveY = moveYY + window.event.clientY - clickY;
+            this.parentNode.style.transform = 'translate(' + moveX +'px,' + moveY + 'px)';
+            
+        }"
+        onmouseup="isDragging = false; moveXX = moveX ; moveYY = moveY;this.style.cursor = 'default';">
+            <!--资源位安全区-->
+            <svg id="safa-area" width="2558" height="1417" viewBox="0 0 2558 1417" style="display: none; position: absolute; top: 0; left: 0; overflow: visible">
+                <defs>
+                    <style>
+                        
+                    .safa {
+                        --safa-area:0.5;
+                        opacity: var(--safa-area,0);
+                    }
+
+                    .safa-area-1 {
+                        fill: #fb0;
+                    }
+
+                    .safa-area-2 {
+                        fill: #c400ff;
+                    }
+
+                    .safa-area-3 {
+                        fill: #00ff5d;
+                    }
+
+                    .safa-area-4 {
+                        fill: red;
+                    }
+                    </style>
+                </defs>
+                <image id="bg-1" x="-532" y="-300" xlink:href="imgs/底图_单张合并_主体居右.png" style="opacity: 1;"/>
+                <g  id="safa" class="safa" transform="translate(-532 -300)">
+                    <rect id="扩展区域" class="safa-area-1" width="2558" height="1417"/>             
+                    <rect id="主要内容区域" class="safa-area-2" x="532" y="300" width="1494" height="857"/>          
+                    <rect id="文字区域" class="safa-area-3" x="532" y="370" width="848" height="680"/>             
+                    <rect id="主体元素区域" class="safa-area-4" x="1380" y="370" width="646" height="680"/>   
+                </g>
+                <g transform="translate(-532 -200)">
+                    <text kerning="auto" x="420" y="120">
+                        <tspan class="safa-area-1" font-size="60px">1.裁剪区域，需预留足够内容</tspan>
+                    </text>
+                    <text kerning="auto" x="1100" y="280">
+                        <tspan class="safa-area-2" font-size="60px">2.主要内容区域</tspan>
+                    </text>
+                    <text kerning="auto" x="800" y="860">
+                        <tspan class="safa-area-3" font-size="60px">3.信息区域</tspan>
+                    </text>
+                    <text kerning="auto" x="1500" y="860">
+                        <tspan class="safa-area-4" font-size="60px">4.主体元素区域</tspan>
+                    </text>
+                </g>
+
+            </svg>
+            <!--资源位内容-->
+            <svg id="zy_1494_857" class="bg" viewBox="0 0 1494 857" >
+                <defs>
+                    <style>
+                        @font-face {
+                            font-family: 'FZJinLS-B-GB';
+                            src: url('../fonts/方正粗金陵.ttf') format('truetype');
+                        }
+                        @font-face {
+                            font-family: 'FZYaSongS-B-GB';
+                            src: url('../fonts/方正粗雅宋.ttf') format('truetype');
+                        }
+                        @font-face {
+                            font-family: 'FZShengShiKaiShuS-EB-GB';
+                            src: url('../fonts/方正盛世楷书.ttf') format('truetype');
+                        }
+                        @font-face {
+                            font-family: 'HYXiaoLiShuJ';
+                            src: url('../fonts/汉仪小隶书.ttf') format('truetype');
+                        }
+                    </style>
+                    <linearGradient id="lincls_title" x1="0%" x2="0%" y1="100%" y2="0%">
+                        <stop offset="20%" stop-color="var(--title-mainColor)" stop-opacity="1" />
+                        <stop offset="80%" stop-color="rgb(255,255,255)" stop-opacity="1" />
+                    </linearGradient>
+                    <linearGradient id="lincls_title_bod" x1="0%" x2="0%" y1="100%" y2="0%">
+                        <stop offset="0%" stop-color="rgb(255,255,255)" stop-opacity="1" />
+                        <stop offset="100%" stop-color="var(--title-mainColor)" stop-opacity="1" />
+                    </linearGradient>
+                    <linearGradient id="lincls_title-sec" x1="0%" x2="100%" y1="0%" y2="0%">
+                        <stop offset="2%" stop-color="rgb(0,0,0)" stop-opacity="1" />
+                        <stop offset="12%" stop-color="rgb(200,200,200)" stop-opacity="1" />
+                        <stop offset="88%" stop-color="rgb(200,200,200)" stop-opacity="1" />
+                        <stop offset="98%" stop-color="rgb(0,0,0)" stop-opacity="1" />
+                    </linearGradient>
+                    <mask id="bg-title-sec">
+                        <rect x="0" y="0" width="724" height="62" fill="url(#lincls_title-sec)"></rect>
+                    </mask>
+                    <filter id="tex-title-sec">
+                        <feBlend in="SourceGraphic" in2="BackgroundImage" mode="soft-light"/>
+                        <!--
+                        multiply：正片叠底
+                        screen：屏幕
+                        overlay：叠加
+                        darken：变暗
+                        lighten：变亮
+                        color-dodge：颜色减淡
+                        color-burn：颜色加深
+                        hard-light：强光
+                        soft-light：柔光
+                        difference：差异
+                        exclusion：排除‌
+                        -->
+                    </filter>
+                </defs>
+
+                <image id="bg" x="-532" y="-300" xlink:href="imgs/底图_单张合并_主体居右.png"/>
+                <image width="266" x="10" y="10" xlink:href="imgs/logo_永劫_大神.png"/>
+
+                <g id="zy_1494_857-info">
+                    <g transform="translate(484 254) skewX(-8)">
+                        <text kerning="auto" font-family="FZYaSongS-B-GB" transform="translate(20 160)">
+                            <tspan id="title-main-2-text-s" font-size="137px" style="text-anchor: middle;" stroke="url(#lincls_title_bod)" stroke-width="1" fill="rgba(0,0,0,0)">见鬼啦!</tspan>
+                        </text>
+                        <text kerning="auto" font-family="FZYaSongS-B-GB">
+                            <tspan id="title-main-1-text-s" font-size="137px" style="text-anchor: middle;" stroke="url(#lincls_title_bod)" stroke-width="1" fill="rgba(0,0,0,0)">僵尸之夜</tspan>
+                        </text>
+                    </g>
+
+                    <g transform="translate(480 250) skewX(-8)">
+                        <text kerning="auto" font-family="FZYaSongS-B-GB" transform="translate(20 160)">
+                            <tspan id="title-main-2-text" font-size="137px" style="text-anchor: middle;" fill="#FFFFFF">见鬼啦!</tspan>
+                        </text>
+                        <text kerning="auto" font-family="FZYaSongS-B-GB">
+                            <tspan id="title-main-1-text" font-size="137px" style="text-anchor: middle;" fill="url(#lincls_title)">僵尸之夜</tspan>
+                        </text>
+                    </g>
+
+                    <g transform="translate(80 460)">
+                        <!--rgb(0, 104, 138)-->
+                        <rect transform="translate(30 20)" x="0" y="0" width="724" height="62" fill="rgb(0, 104, 138)" mask="url(#bg-title-sec)" fliter="url(#tex-title-sec)"></rect>
+                        <image style="opacity: 0.7; mix-blend-mode: soft-light;" transform="translate(30 20)" width="724" height="62"  xlink:href="imgs/底框_副标题纹理.png" fliter="url(#tex-title-sec)"/>
+                        <text kerning="auto"  transform="translate(400 64)">
+                            <tspan id="title-sec-text" font-size="36px" style="text-anchor: middle;" font-family="FZJinLS-B-GB" fill="#FFFFFF">十连神杯、数百宝箱送捏脸扮鬼达人</tspan>
+                        </text>
+                        <path transform="translate(40 4)" fill-rule="evenodd"  fill="var(--title-mainColor)" d="M694,78.34l-347,2-347-2,347-2ZM395.25,17.63,694,15.91,397.24,14.19ZM294.68,14.21,0,15.91l296.9,1.71ZM393,17a2.8,2.8,0,0,1,.53-.72,6,6,0,0,1,1.77-.87H392a4.17,4.17,0,0,0-1.82.72,7.43,7.43,0,0,0-.85.87H393m-5.6,0h-3.63a8,8,0,0,1,.84-.87,4.24,4.24,0,0,1,1.83-.72h3.26a6,6,0,0,0-1.77.87,2.53,2.53,0,0,0-.53.72m-86,0a2.8,2.8,0,0,0-.53-.72,6,6,0,0,0-1.77-.87h3.26a4.17,4.17,0,0,1,1.82.72A7.43,7.43,0,0,1,305,17h-3.63m5.6,0a2.8,2.8,0,0,0-.53-.72,6,6,0,0,0-1.77-.87H308a4.24,4.24,0,0,1,1.83.72,8,8,0,0,1,.84.87H307M347.54,0c-.28,2.19-2.07,10.84-6.33,8.37a57.09,57.09,0,0,0,6.33,5.91,58,58,0,0,0,6.33-5.91c-4.27,2.47-6.06-6.18-6.33-8.37m0,11.63c-.58-.49-1.25-1.07-1.9-1.66a5.67,5.67,0,0,0,1.9-2.83A5.54,5.54,0,0,0,349.43,10c-.65.59-1.32,1.17-1.89,1.66m-2.23,6c-2.58-.91-8.95-2.33-11.74-2.13-1.9.14-3.45,1.68-8.55,1.63-3.66,0-4-3.21-10.56-2.6a6.34,6.34,0,0,0-3.87-2.38,19.74,19.74,0,0,1,7.08-1.05c3.93.33,5.52,2.2,6.64,2.73s4.57,1,4-.81c-.26-.83-4.81-2.93-4.81-2.93a29.86,29.86,0,0,1,11.74,1.76c7.49,2.63,10.07,5.78,10.07,5.78m4.45,0s2.58-3.15,10.07-5.78a29.86,29.86,0,0,1,11.74-1.76S367,12.18,366.76,13c-.56,1.81,2.85,1.35,4,.81s2.71-2.4,6.64-2.73a19.74,19.74,0,0,1,7.08,1.05,6.3,6.3,0,0,0-3.86,2.38c-6.53-.61-6.9,2.57-10.57,2.6-5.1.05-6.65-1.49-8.55-1.63-2.78-.2-9.16,1.22-11.74,2.13"/>
+                        <path fill-rule="evenodd"  fill="var(--title-mainColor)" d="M70.548,43.944 C70.548,43.944 65.410,42.681 60.961,40.390 C57.379,38.545 54.970,33.282 54.970,33.282 C54.970,33.282 49.333,46.640 36.995,49.829 C50.610,55.462 48.920,53.154 57.180,64.081 C64.204,55.462 64.163,50.378 77.366,53.161 C90.568,55.944 97.551,44.609 97.551,44.609 C97.551,44.609 89.703,53.636 71.598,47.460 C65.440,45.355 59.631,58.449 54.297,49.829 C52.707,45.948 57.639,44.181 60.961,43.944 C67.920,44.066 70.548,43.944 70.548,43.944 Z"/>
+                        <path fill-rule="evenodd"  fill="var(--title-mainColor)" d="M721.191,44.014 C721.191,44.014 726.370,42.757 730.853,40.478 C734.462,38.642 736.890,33.406 736.890,33.406 C736.890,33.406 742.571,46.696 755.004,49.870 C741.284,55.475 742.986,53.178 734.663,64.051 C727.585,55.475 727.626,50.416 714.321,53.185 C701.016,55.954 693.979,44.676 693.979,44.676 C693.979,44.676 701.887,53.657 720.133,47.512 C726.339,45.419 732.193,58.446 737.569,49.870 C739.171,46.008 734.200,44.250 730.853,44.014 C723.839,44.136 721.191,44.014 721.191,44.014 Z"/>
+                    </g>
+
+                    <g id="gift" transform="translate(40 560)">
+                        <g id="gift-1">
+                            <image id="gift-icon-bg-1" x="0" y="0" width="228" height="228" xlink:href="imgs/底框_奖励图标.png"/>
+                            <image id="gift-icon-1" x="30" y="24" width="170" height="170" xlink:href="imgs/奖励_icon.png"/>
+                            <g transform="translate(24 186)">
+                                <image id="gift-name-bg-1" x="0" y="0" width="184" height="38" transform="scale(1.2,1) translate(-14 0)" xlink:href="imgs/底框_奖励名称.png"/>
+                                <text kerning="auto"  transform="translate(92 28)">
+                                    <tspan id="gift-name-text-1" font-size="26px" style="text-anchor: middle;" font-family="FZJinLS-B-GB" fill="#ffeabd">奖励名称名称</tspan>
+                                </text>
+                            </g>
+                            <g id="gift-tag-1" style="opacity: 1;" transform="translate(158 20)">
+                                <image x="0" y="0" width="34" height="64" xlink:href="imgs/底框_标签.png"/>
+                                <text kerning="auto"  transform="translate(16 24)">
+                                    <tspan id="gift-num-text-1" x="2" y="0" font-size="20px" style="text-anchor: middle;" font-family="FZJinLS-B-GB" fill="#fff">二</tspan>
+                                    <tspan x="0" y="24" font-size="20px" style="text-anchor: middle;" font-family="FZJinLS-B-GB" fill="#fff">连</tspan>
+                                </text>
+                            </g>
+                        </g>
+                        <g id="gift-2" transform="translate(200 0)">
+                            <image id="gift-icon-bg-2" x="0" y="0" width="228" height="228" xlink:href="imgs/底框_奖励图标.png"/>
+                            <image id="gift-icon-2" x="30" y="24" width="170" height="170" xlink:href="imgs/奖励_icon.png"/>
+                            <g transform="translate(24 186)">
+                                <image id="gift-name-bg-2" x="0" y="0" width="184" height="38" transform="scale(1.2,1) translate(-14 0)" xlink:href="imgs/底框_奖励名称.png"/>
+                                <text kerning="auto"  transform="translate(92 28)">
+                                    <tspan id="gift-name-text-2" font-size="26px" style="text-anchor: middle;" font-family="FZJinLS-B-GB" fill="#ffeabd">奖励名称名称</tspan>
+                                </text>
+                            </g>
+                            <g id="gift-tag-2" style="opacity: 1;" transform="translate(158 20)">
+                                <image x="0" y="0" width="34" height="64" xlink:href="imgs/底框_标签.png"/>
+                                <text kerning="auto"  transform="translate(16 24)">
+                                    <tspan id="gift-num-text-2" x="2" y="0" font-size="20px" style="text-anchor: middle;" font-family="FZJinLS-B-GB" fill="#fff">二</tspan>
+                                    <tspan x="0" y="24" font-size="20px" style="text-anchor: middle;" font-family="FZJinLS-B-GB" fill="#fff">连</tspan>
+                                </text>
+                            </g>
+                        </g>
+                        <g id="gift-3" transform="translate(400 0)">
+                            <image id="gift-icon-bg-3" x="0" y="0" width="228" height="228" xlink:href="imgs/底框_奖励图标.png"/>
+                            <image id="gift-icon-3" x="30" y="24" width="170" height="170" xlink:href="imgs/奖励_icon.png"/>
+                            <g transform="translate(24 186)">
+                                <image id="gift-name-bg-3" x="0" y="0" width="184" height="38" transform="scale(1.2,1) translate(-14 0)" xlink:href="imgs/底框_奖励名称.png"/>
+                                <text kerning="auto"  transform="translate(92 28)">
+                                    <tspan id="gift-name-text-3" font-size="26px" style="text-anchor: middle;" font-family="FZJinLS-B-GB" fill="#ffeabd">奖励名称名称</tspan>
+                                </text>
+                            </g>
+                            <g id="gift-tag-3" style="opacity: 1;" transform="translate(158 20)">
+                                <image x="0" y="0" width="34" height="64" xlink:href="imgs/底框_标签.png"/>
+                                <text kerning="auto"  transform="translate(16 24)">
+                                    <tspan id="gift-num-text-3" x="2" y="0" font-size="20px" style="text-anchor: middle;" font-family="FZJinLS-B-GB" fill="#fff">二</tspan>
+                                    <tspan x="0" y="24" font-size="20px" style="text-anchor: middle;" font-family="FZJinLS-B-GB" fill="#fff">连</tspan>
+                                </text>
+                            </g>
+                        </g>
+                        <g id="gift-4" transform="translate(600 0)">
+                            <image id="gift-icon-bg-4" x="0" y="0" width="228" height="228" xlink:href="imgs/底框_奖励图标.png"/>
+                            <image id="gift-icon-4" x="30" y="24" width="170" height="170" xlink:href="imgs/奖励_icon.png"/>
+                            <g transform="translate(24 186)">
+                                <image id="gift-name-bg-4" x="0" y="0" width="184" height="38" transform="scale(1.2,1) translate(-14 0)" xlink:href="imgs/底框_奖励名称.png"/>
+                                <text kerning="auto"  transform="translate(92 28)">
+                                    <tspan id="gift-name-text-4" font-size="26px" style="text-anchor: middle;" font-family="FZJinLS-B-GB" fill="#ffeabd">奖励名称名称</tspan>
+                                </text>
+                            </g>
+                            <g id="gift-tag-4" style="opacity: 1;" transform="translate(158 20)">
+                                <image x="0" y="0" width="34" height="64" xlink:href="imgs/底框_标签.png"/>
+                                <text kerning="auto"  transform="translate(16 24)">
+                                    <tspan id="gift-num-text-4" x="2" y="0" font-size="20px" style="text-anchor: middle;" font-family="FZJinLS-B-GB" fill="#fff">二</tspan>
+                                    <tspan x="0" y="24" font-size="20px" style="text-anchor: middle;" font-family="FZJinLS-B-GB" fill="#fff">连</tspan>
+                                </text>
+                            </g>
+                        </g>
+                    </g>
+
+                    <g transform="translate(1300 610)">
+                        <path fill-rule="evenodd"  stroke="var(--title-mainColor)" stroke-width="1px" stroke-linecap="butt" stroke-linejoin="miter" fill-opacity="0.3" fill="rgb(0, 0, 0)"
+                        d="M180.906,232.937 L95.288,232.937 L90.985,225.265 L86.682,232.937 L1.031,232.937 L1.031,108.531 L9.152,103.977 L1.031,99.423 L1.031,1.125 L86.302,1.125 L90.965,9.440 L95.628,1.125 L180.906,1.125 L180.906,99.294 L172.560,103.975 L180.906,108.656 L180.906,232.937 Z"/>
+                        <image  transform="translate(18 24)" width="146" height="146"  xlink:href="imgs/二维码.png" />
+                        <text kerning="auto" transform="translate(90 200)">
+                            <tspan font-size="20px" style="text-anchor: middle;" font-family="FZJinLS-B-GB"  fill="#FFFFFF">扫码领捏脸赢神杯</tspan>
+                        </text>
+                        
+                    </g>
+
+                </g>
+            </svg>
+        </div>
+    </div>
+    
+    <!--视窗信息-->
+    <div id="view-info" class="df df-ffc " style="position: absolute; top:20px; left: 10px;">
+        <div class=" df df-ffc" style="--gap:2px; padding: 4px; opacity: 0.5; height: auto; font-size: 12px;">
+            <span>缩放：<span id="zoom-num">40</span> %</span>
+            <span>尺寸：1494×857</span>
+            <span>渠道：大神</span>
+            <span>游戏：永劫无间</span>
+        </div>
+    </div>
+    <!--底栏-->
+    <div style="position: absolute;left: 10px; bottom: 10px; opacity: 0.5;font-size: 10px;display: flex; gap:10px; align-items: center;">
+        <div style="display: flex; gap: 4px; align-items: center;">
+            配置化模板 v0.1.0</div>
+        <div>©YNYU @lvynyu2.gmail.com</div>
+    </div>
+</div>
+<!--放大器-->
+<div id="view-size" class="df df-ffc cc" style=" --gap:10px; position: absolute; bottom:20px; right: 10px;">
+    <button class="btn-mini" onclick="
+    viewSlider.value = viewSlider.value*1 + 10;
+    zoomNum.innerHTML = viewSlider.value;
+    zoom = viewSlider.value;
+    viewBox.style.transform = 'scale( '+ viewSlider.value/100 + ')';
+    ;"> 
+    + </button>
+
+    <div class="df cc" style="width: 20px; height: 80px;">
+        <input type="range" min="20" max="150" value="40" id="slider-view" style="transform: rotate(-90deg);"
+        oninput="viewBox.style.transform = 'scale( '+ this.value/100 + ')';zoom = viewSlider.value; zoomNum.innerHTML = viewSlider.value; ;" />
+    </div>
+
+    <button class="btn-mini" onclick="
+    viewSlider.value -= 10;
+    zoomNum.innerHTML = viewSlider.value;
+    zoom = viewSlider.value;
+    viewBox.style.transform = 'scale( '+ viewSlider.value/100 + ')';
+    ;"> 
+    - </button>
+
+    <div style="height: 4px;"></div>
+    <button class="btn-mini" style="font-size: 10px; font-weight: 700; border-radius: 30%; border: var(--boxBod) 2px solid;"
+    onclick="autoZoom()">
+        <span style="opacity: 0.8;">自动</span>
+    </button>
+</div>
+
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
+<script type="text/javascript" src="src/canvg.js"></script>
+
+<script>
+    //写死模板
+    const root = document.documentElement;
+    const side = document.getElementById("side");
+    const sideArea = document.getElementById("side-area");
+    const view = document.getElementById("view");
+    const viewBox = document.getElementById("view-box");
+    const viewInfo = document.getElementById("view-info");
+    const viewSlider = document.getElementById("slider-view");
+    const safaArea = document.getElementById("safa-area");
+    const txt1 = document.getElementById("title-main-1-text");
+    const txt1s = document.getElementById("title-main-1-text-s");
+    const txt2 = document.getElementById("title-main-2-text");
+    const txt2s = document.getElementById("title-main-2-text-s");
+    const txt3 = document.getElementById("title-sec-text");
+    const modelTable = document.getElementById("model-table");
+    const zoomNum = document.getElementById("zoom-num");
+    const giftNum =  [null,null,'二','三','四','五','六','七','八','九','十']
+
+    //表单参数
+    var giftNumUser = [10,5,2,1];
+    var giftNameUser = ['永昼神杯','永昼神杯','盖世宝箱任选礼','盖世宝箱任选礼'];
+    var giftPickUser = [true,true,true,true]
+
+    //交互参数
+    var isDragging = false;//拖拽画布
+    var clickX = 0,clickY = 0,moveX = 0,moveY = 0,moveXX = 0,moveYY = 0;
+    var zoom = 40;//缩放比例
+    var viewport = {
+        x:0,
+        y:0,
+        center:[0,0],
+    }//画布参数
+
+    window.onload = ()=>{
+        giftNameSet()
+        giftNumSet()
+        autoZoom()
+    }
+
+    window.onresize = ()=>{
+        autoZoom()
+    }
+
+    //自动缩放
+    function autoZoom(){
+        var size1 = view.offsetWidth/(viewBox.offsetWidth + 40);
+        var size2 = view.offsetHeight/(viewBox.offsetHeight + 40);
+        var size = size1 > size2 ? size2 : size1
+        viewSlider.value = size*100;
+        viewBox.style.transform = 'scale('+ size +')';
+        viewBox.parentNode.style.transform = 'translate(0,0)'
+        zoomNum.innerHTML = viewSlider.value;
+        zoom = viewSlider.value;
+        isDragging = false;
+        clickX = 0,clickY = 0,moveX = 0,moveY = 0,moveXX = 0,moveYY = 0;
+    }
+
+    //奖励显隐
+    function giftPick(e){
+        if(e){
+            var i = e.id.split('-')[2] - 1; 
+            giftPickUser[i] = e.checked;
+            var pickNum = giftPickUser.filter(item => item).length;
+            document.getElementById('gift').setAttribute('transform','translate(' + (40 + (4 - pickNum)*100) + ',560)');
+            if(e.checked){
+                document.getElementById('gift-' + (i + 1)).style.opacity = 1;
+
+            } else {
+                document.getElementById('gift-' + (i + 1)).style.opacity = 0;
+            }
+            var step = -1;
+            for (var i = 0; i < 4; i++){
+                if(giftPickUser[i]){
+                    step++;
+                    document.getElementById('gift-' + (i + 1)).setAttribute('transform','translate(' + (200*step) + ',0)');
+                }
+                
+            }
+            
+        }
+    }
+    //奖励图片
+    function giftImg(e){
+        var i = e.id.split('-')[2] - 1;
+        console.log(e.files[0].name)
+        var reader = new FileReader();
+        reader.onload = (data)=>{
+            var dataURL = data.target.result;
+            document.getElementById('gift-icon-' + (i + 1)).setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', dataURL );
+            document.getElementById('gift-icon-' + (i + 1)).setAttribute('href',dataURL);
+        }
+        reader.readAsDataURL(e.files[0])
+        
+    }
+
+    //奖励名称
+    function giftNameSet(e){
+        if(e){
+            var i = e.id.split('-')[2] - 1;
+            giftNameUser[i] = e.value;
+            document.getElementById('gift-name-text-' + (i + 1)).innerHTML = giftNameUser[i]
+        } else {
+            for(var i = 0; i < giftNameUser.length; i++){
+                document.getElementById('gift-name-text-' + (i + 1)).innerHTML = giftNameUser[i]
+            }
+        }
+    }
+    //奖励数量
+    function giftNumSet(e){
+        if(e){
+            var i = e.id.split('-')[2] - 1;
+            giftNumUser[ e.id.split('-')[2] - 1] = e.value;
+            if(giftNum[giftNumUser[i]*1]){
+                document.getElementById('gift-tag-' + (i + 1)).style.opacity = 1;
+                document.getElementById('gift-num-text-' + (i + 1)).innerHTML = giftNum[giftNumUser[i]*1]
+            } else {
+                document.getElementById('gift-tag-' + (i + 1)).style.opacity = 0;
+            }
+        } else {
+            for(var i = 0; i < giftNumUser.length; i++){
+                if(giftNum[giftNumUser[i]*1]){
+                    document.getElementById('gift-tag-' + (i + 1)).style.opacity = 1;
+                    document.getElementById('gift-num-text-' + (i + 1)).innerHTML = giftNum[giftNumUser[i]*1]
+                } else {
+                    document.getElementById('gift-tag-' + (i + 1)).style.opacity = 0;
+                }
+        }
+        } 
+    }
+    //重置输入色值
+    function reColorText(e) {
+
+        if (e.value == '') {
+        e.value = "#000000"
+        }
+        if (e.value.length < 7) {
+        if (e.value[0] == '#') {
+            var a = e.value.split("#")[1]
+            if (a.length == 3) {
+            e.value = "#" + a + a
+            }
+            if (a.length == 2) {
+            e.value = "#" + a + a + a
+            }
+            if (a.length == 1) {
+            e.value = "#" + a + a + a + a + a + a
+            }
+            if (a.length == 4) {
+            e.value = "#" + a + "00"
+            }
+            if (a.length == 5) {
+            e.value = "#" + a + "0"
+            }
+        } else {
+            var c = e.value
+            if (e.value.length == 3) {
+            e.value = "#" + c + c
+            }
+            if (e.value.length == 2) {
+            e.value = "#" + c + c + c
+            }
+            if (e.value.length == 1) {
+            e.value = "#" + c + c + c + c + c + c
+            }
+            if (e.value.length == 4) {
+            e.value = "#" + c + "00"
+            }
+            if (e.value.length == 5) {
+            e.value = "#" + c + "0"
+            }
+            if (e.value.length == 6) {
+            e.value = "#" + c
+            }
+        }
+        } else if (e.value.length > 7) {
+        if (e.value[0] == '#' && e.value[1] == '#') {
+            e.value = e.value.substring(1, 8)
+        } else {
+            e.value = "#000000"
+        }
+        } else if (e.value.length = 7) {
+        e.value = e.value
+        } else {
+        e.value = "#000000"
+        }
+
+        }
+
+    //导出
+    function exportAll(){
+        var svg =  new XMLSerializer().serializeToString(document.getElementById('safa-area')) 
+        svgToDataURL(svg)
+        /*
+        html2canvas(viewBox,{scale: 2.5}).then(canvas => {
+            viewBox.appendChild(canvas) // 将Canvas添加到文档中，或进行其他处理，如转换为图片URL：canvas.toDataURL('image/png')
+        });
+        */
+        
+    }
+
+    function svgToDataURL(svg) {
+        var svgBlob = new Blob([svg], {type: "image/svg+xml"});
+        var url = URL.createObjectURL(svgBlob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'downloaded-svg.svg'; // 定义下载文件名
+        document.body.appendChild(a);
+        a.click();
+    }
+    
+
+
+</script>
+</body>
+</html>

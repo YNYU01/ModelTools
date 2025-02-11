@@ -1,0 +1,379 @@
+:root{
+    --mainColor: #acacac;
+    --mainColor2: #378360;
+    --mainColor3: #fff;
+    --boxBod: #5d5d5d;
+    --boxBak: #202020;
+    --boxGry: #2c2c2c;
+    --liColor1: #d03b3b;
+    --tabBR: 0 8px 8px 8px;
+    --keepTrue: #d03b3b;
+    --keepFalse: #5d5d5d;
+    --keep: var(--keepTrue);
+    --link: #4e7075;
+    --map-line-x: 50%;
+    --map-line-y: 50%;
+    --map-bg: #202020;
+    /*other*/
+    --bg-bigW:1494px;
+    --bg-bigH:857px;
+    --title-mainColor:#ffda82;
+    --safa-area:0.5;
+}
+@font-face {
+    font-family: 'FZJinLS-B-GB';
+    src: url('../fonts/方正粗金陵.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'FZYaSongS-B-GB';
+    src: url('../fonts/方正粗雅宋.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'FZShengShiKaiShuS-EB-GB';
+    src: url('../fonts/方正盛世楷书.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'HYXiaoLiShuJ';
+    src: url('../fonts/汉仪小隶书.ttf') format('truetype');
+}
+
+html,body{
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+}
+body{
+    background-color: var(--boxBak);
+    font-size: 14px;
+    color:var(--mainColor);
+    display: flex;
+    background-image: repeating-radial-gradient(
+        circle at center,  
+        rgba(0, 0, 0, 0.2) 0,
+        rgba(0, 0, 0, 0.2) 1px,
+        transparent 1px,
+        transparent 20px
+    );
+    background-size:10px 10px ;
+    font-family:"Chocolate Classical Sans", Arial, Helvetica, sans-serif;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: 0.01em;
+    line-height: 1.5em;
+}
+
+html,body,.noselect {
+    -webkit-user-select: none;
+    /* Safari */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* IE/Edge */
+    user-select: none;
+    /* 标准语法 */
+}
+
+.noscrollbar {
+    scrollbar-width: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+.noscrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.bg{
+    width:var(--bg-bigW);
+    height:var(--bg-bigH);
+}
+.side{
+    min-width: 280px;
+    max-width: 280px;
+    padding: 10px;
+    background-color: var(--boxGry);
+    flex:0 0 auto;
+    border: var(--boxGry) 10px solid;
+    border-bottom: var(--boxGry) 40px solid;
+}
+
+.side-float{
+    min-width: 280px;
+    max-width: 280px;
+    padding: 10px;
+    background-color: var(--boxGry);
+    flex:0 0 auto;
+    border: var(--boxBod) 1px solid;
+    border-radius: 10px;
+    margin: 10px;
+    opacity: 0.5;
+}
+
+.side-float:hover{
+    opacity: 1;
+}
+.side p{
+    font-size: 13px;
+    opacity: 0.8;
+    margin-bottom: 6px;
+}
+.side a{
+    width: 5ch;
+    min-width: 4ch;
+    display: inline-block;
+    text-align-last: justify;
+}
+.btn{
+    width: 100%;
+    border-radius: 4px;
+    border: var(--boxGry) 1px solid;
+    padding: 2px;
+    color: var(--mainColor);
+    background-color: var(--boxGry);
+}
+
+.btn2{
+    width: 100%;
+    border-radius: 4px;
+    border: var(--boxBod) 1px solid;
+    padding: 2px;
+    color: #ffffff;
+    background-color: var(--boxBod);
+}
+
+.btn3{
+    width: 100%;
+    border: var(--boxBod) 1px solid;
+    border-radius: 4px;
+    padding: 2px;
+    color: var(--mainColor);
+    background-color: var(--boxBak);
+}
+
+.btn2:hover,.btn3:hover,.btn-mini:hover{
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+.btn-mini{
+    width: 30px;
+    height: 30px;
+    flex: 0 0 auto;
+    border: var(--boxBod);
+    border-radius: 4px;
+    padding: 2px;
+    font-size: 16px;
+    color: var(--mainColor);
+    background-color: var(--boxGry);
+}
+
+.btn-big:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+input[type="checkbox"]:checked+.btn-big .path1 {
+    transform: translateY(6px) translateX(-6px);
+}
+
+input[type="checkbox"]:checked+.btn-big .path2 {
+    transform: translateX(6px) translateY(-6px);
+}
+
+.tags-search-toast {
+    width: var(--toastW, 100px);
+    text-align: center;
+    position: absolute;
+    bottom: 10px;
+    padding: 2px 4px;
+    border-radius: 4px;
+    color: #ffffff;
+    background-color: #000000;
+    pointer-events: none;
+}
+
+.tags-search-toast-area {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    bottom: 1px;
+    right: -1px;
+    opacity: 00;
+    z-index: 20;
+    cursor: pointer;
+}
+
+.tags-search-toast-area:hover {
+    opacity: 1;
+    transition: opacity 0.2s ease-out,background-color 0.5s ease-out;
+}
+
+.tags-search-toast-area:hover .tags-search-toast {
+    transform: translateY(-10px);
+    transition: transform 0.2s ease-out,background-color 0.5s ease-out;
+}
+
+.search-box {
+    width: 100%;
+    height: 22px;
+    font-size: 12px;
+    padding:0 0 1px 4px;
+    color: var(--boxBod);
+    border-radius: 4px;
+    background-color: var(--boxBak);
+    border: 1px solid var(--boxBod);
+    box-sizing: border-box;
+}
+
+.search-box:focus {
+    color: var(--mainColor);
+}
+
+
+*:focus {
+    outline: none;
+}
+
+.select {
+    width: 100%;
+    height: 22px;
+    font-size: 12px;
+    color: var(--boxBod);
+    border-radius: 4px;
+    background-color: var(--boxBak);
+    border: 1px solid var(--boxBod);
+    z-index: 20;
+}
+
+.select:focus {
+    color: var(--mainColor);
+}
+
+.chk-gift{
+    width: 18px;
+    height: 18px;
+    flex: 0 0 auto;
+    opacity: 0.5;
+    --has:rgba(0,0,0,0);
+}
+
+input[type="checkbox"]:checked + .chk-gift{
+    --has:var(--mainColor);
+    opacity: 1;
+}
+
+.input-btn-skill {
+    width: 100%;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: var(--boxBak);
+    border-radius: 4px;
+    border: var(--boxBod) 1px solid;
+    color: var(--mainColor);
+    outline: none;
+    overflow: hidden;
+}
+
+
+/*自动布局*/
+.df{
+    display: flex;
+    gap:var(--gap,10px)
+}
+.df-ffc{
+    flex-flow: column;
+}
+.cc{
+    justify-content: center;
+    align-items: center;
+}
+.ovh{
+    overflow: hidden;
+}
+.wh100{
+    width: 100%;
+    height: 100%; 
+}
+.w100{
+    width: 100%;
+}
+
+/*安全区*/
+.safa {
+    opacity: var(--safa-area,0);
+}
+
+.safa-area-1 {
+    fill: #fb0;
+}
+
+.safa-area-2 {
+    fill: #c400ff;
+}
+
+.safa-area-3 {
+    fill: #00ff5d;
+}
+
+.safa-area-4 {
+    fill: red;
+}
+
+/* 隐藏range控件默认样式 */
+[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    width: 80px;
+}
+
+/* 定义range控件轨道的样式 */
+[type="range"]::-webkit-slider-runnable-track {
+    height: 2px;
+    border-radius: 1px;
+    background: var(--boxBod);
+}
+
+/* 定义range控件容器的样式 */
+[type="range" i]::-webkit-slider-container {
+    height: 20px;
+    overflow: hidden;
+}
+
+/* 定义range控件拇指的样式 */
+[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 8px;
+    height: 16px;
+    border-radius: 4px;
+    background-color: var(--boxBod);
+    margin-top: -7px;
+}
+
+#view-size{
+    opacity: 0.5;
+    font-family: 'Roboto', Courier, monospace;
+}
+#view-size:hover{
+    opacity: 1;
+}
+
+
+.loadding{
+    animation: load 1s;
+}
+
+@keyframes load {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
