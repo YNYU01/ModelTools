@@ -812,7 +812,7 @@
         */
         
 
-        domtoimage.toJpeg(side, { quality: 0.95 })
+        domtoimage.toJpeg(viewBox, { quality: 1 })
         .then(function (dataUrl) {
             var link = document.createElement('a');
             link.download = 'test.jpeg';
