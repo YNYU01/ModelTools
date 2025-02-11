@@ -695,7 +695,7 @@
     //奖励图片
     function giftImg(e){
         var i = e.id.split('-')[2] - 1;
-        console.log(e.files[0].name)
+        //console.log(e.files[0].name)
         var reader = new FileReader();
         reader.onload = (data)=>{
             var dataURL = data.target.result;
@@ -705,6 +705,17 @@
         reader.readAsDataURL(e.files[0])
         
     }
+    //背景图片
+    function bgImg(e){
+        var reader = new FileReader();
+        reader.onload = (data)=>{
+            var dataURL = data.target.result;
+            document.getElementById('bg').setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', dataURL );
+            document.getElementById('bg').setAttribute('href',dataURL);
+        }
+        reader.readAsDataURL(e.files[0])
+    }
+
 
     //奖励名称
     function giftNameSet(e){
@@ -800,7 +811,7 @@
         }
 
     //导出
-    function exportAll(){
+    async function exportAll(){
         /*
         var svg =  new XMLSerializer().serializeToString(document.getElementById('safa-area')) 
         svgToDataURL(svg)
@@ -810,26 +821,51 @@
             viewBox.appendChild(canvas) // 将Canvas添加到文档中，或进行其他处理，如转换为图片URL：canvas.toDataURL('image/png')
         });
         */
+        var zyNode = document.getElementById("zy_1494_857")
+        viewBox.style.transform = 'scale(1)';
+        var svgElem = zyNode.querySelectorAll('image');
         
-
-        domtoimage.toJpeg(viewBox, { quality: 1 })
-        .then(function (dataUrl) {
-            var link = document.createElement('a');
-            link.download = 'test.jpeg';
-            link.href = dataUrl;
-            link.click();
-        });
+        if(svgElem){
+            svgElem.forEach(function(node,index) {
+                var href = node.getAttributeNS("http://www.w3.org/1999/xlink", "xlink:href");
+                if(!href){
+                    href = node.getAttribute('xlink:href');
+                }
+                if (href.length > 1){
+                    // 使用fetch获取图片
+                    fetch(href)
+                    .then(response => response.blob())
+                    .then(blob => {
+                        var reader = new FileReader();
+                        reader.onloadend = async function() {
+                            var dataURL = reader.result;
+                            await node.setAttribute("href", dataURL);
+                            await node.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', dataURL );
+                            if(index == svgElem.length - 1){
+                                setTimeout(()=>{
+                                    domtoimage.toJpeg(viewBox, { quality: 0.95 })
+                                    .then(function (dataUrl) {
+                                        var link = document.createElement('a');
+                                        link.download = 'test.jpeg';
+                                        link.href = dataUrl;
+                                        link.click();
+                                    });
+                                    viewBox.style.transform = 'scale('+ zoom/100 +')';
+                                },500)
+                                
+                            }
+                        };
+                        reader.readAsDataURL(blob);
+                    })
+                    .catch(error => console.error('Error loading image:', error));
+                }
+                
+                
+            });
+        }
+        
     }
 
-    function svgToDataURL(svg) {
-        var svgBlob = new Blob([svg], {type: "image/svg+xml"});
-        var url = URL.createObjectURL(svgBlob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'downloaded-svg.svg'; // 定义下载文件名
-        document.body.appendChild(a);
-        a.click();
-    }
     
 
 
