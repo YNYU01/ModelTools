@@ -364,6 +364,18 @@ input[type="checkbox"]:checked + .chk-gift{
     opacity: 1;
 }
 
+#side{
+    position: fixed;
+}
+
+#view{
+    width: calc(100% - 300px);
+}
+
+#view-size{
+    bottom:20px;
+    right: 10px;
+}
 
 .loadding{
     animation: load 1s;
@@ -375,5 +387,27 @@ input[type="checkbox"]:checked + .chk-gift{
     }
     100%{
         opacity: 1;
+    }
+}
+
+@media (max-width:750px){
+
+    body{
+        flex-flow: column;
+    }
+
+    #side{
+        --boxGry:rgba(25,25,25,0.9);
+        min-width: calc(100% - 40px);
+        max-height: calc(100% - 80px);
+        border-bottom: 10px var(--boxGry) solid;
+    }
+
+    #view{
+        width: 100%;
+    }
+
+    #view-size{
+        bottom: 80px;
     }
 }
