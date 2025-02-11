@@ -812,7 +812,7 @@
         */
         
 
-        domtoimage.toJpeg(document.getElementById('safa-area'), { quality: 0.95 })
+        domtoimage.toJpeg(side, { quality: 0.95 })
         .then(function (dataUrl) {
             var link = document.createElement('a');
             link.download = 'test.jpeg';
