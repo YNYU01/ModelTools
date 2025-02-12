@@ -18,6 +18,7 @@
     --bg-bigW:1494px;
     --bg-bigH:857px;
     --title-mainColor:#ffda82;
+    --title-secColor:#00688a;
     --safa-area:0.5;
 }
 @font-face {
@@ -405,6 +406,11 @@ input[type="checkbox"]:checked + .chk-gift{
 
     #view{
         width: 100%;
+    }
+
+    #view-box{
+        transform: scale(0.4);
+        transition: transform 0.5s ;
     }
 
     #view-size{
