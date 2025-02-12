@@ -654,6 +654,11 @@
         center:[0,0],
     }//画布参数
 
+    window.onbeforeunload = ()=>{
+        window.event.preventDefault();
+        window.event.returnValue = '系统可能不会保存您所做的更改' ;
+    }
+ 
     window.onload = ()=>{
         giftNameSet()
         giftNumSet()
