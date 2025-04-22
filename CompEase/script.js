@@ -53,6 +53,9 @@ window.onmessage = (messages) => {
       dataText.value = docDataText;
       dataText.focus()
     }
+    if(type == "sendDoc"){
+      console.log(info)
+    }   
   }
 }
 
