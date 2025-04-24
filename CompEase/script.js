@@ -52,6 +52,7 @@ window.onmessage = (messages) => {
       //console.log(docDataText)
       dataText.value = docDataText;
       dataText.focus()
+      userTableData = docDataText;
     }
     if(type == "sendDoc"){
       console.log(info)
